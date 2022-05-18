@@ -1,20 +1,21 @@
 const express = require('express')
 const router = express.Router()
+const {
+	getBuildings,
+	getBuilding,
+	postBuilding,
+	putBuilding,
+	deleteBuilding,
+} = require('../controllers/buildings.controller')
 
-router.get('/', async (req, res) => {
-	const data = await Building.findAll()
-	res.send(data)
-})
+router.get('/', getBuildings)
 
-router.get('/:id', async (req, res) => {
-	const data = await Building.findByPk(req.params.id)
-	res.send(data)
-})
+router.get('/:id?', getBuilding)
 
-router.post('/', async (req, res) => {})
+router.post('/', postBuilding)
 
-router.put('/:id', async (req, res) => {})
+router.put('/:id', putBuilding)
 
-router.delete('/:id', async (req, res) => {})
+router.delete('/:id', deleteBuilding)
 
 module.exports = router
