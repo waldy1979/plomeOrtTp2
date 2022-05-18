@@ -1,19 +1,5 @@
-const express = require('express')
-const app = express()
-const { Building } = require('./src/db/models')
+const app = require('./src/server')
 
-app.get('/', (req, res) => {
-	res.send('Hello world')
+app.listen(app.get('port'), () => {
+	console.log(`Server on port ${app.get('port')}!`)
 })
-
-app.get('/buildings', async (req, res) => {
-	const data = await Building.findAll()
-	res.send(data)
-})
-
-app.get('/buildings/:id', async (req, res) => {
-	const data = await Building.findByPk(req.params.id)
-	res.send(data)
-})
-
-app.listen(2999)
