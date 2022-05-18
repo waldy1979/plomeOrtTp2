@@ -15,18 +15,10 @@ module.exports = {
       },
       buildingId: { // FK
         type: Sequelize.DataTypes.INTEGER,
-        references: {
-          model: "buildings",
-          key: "buildingId",
-        },
         allowNull: false,
       },
       plumberId: { // FK
         type: Sequelize.DataTypes.INTEGER,
-        references: {
-          model: "plumbers",
-          key: "plumberId",
-        },
         allowNull: false,
       },
       startingDate: {
@@ -40,13 +32,17 @@ module.exports = {
         allowNull: false,
       },
       state: {
-        type: Sequelize.DataTypes.DATE,
+        type: Sequelize.DataTypes.ENUM('en curso', 'terminado'),
         defaultValue: Sequelize.DataTypes.NOW,
         allowNull: false,
       },
       payment: {
         type: Sequelize.DataTypes.INTEGER,
-        defaultValue: Sequelize.DataTypes.NOW,
+        allowNull: false,
+      },
+      isPayed: {
+        type: Sequelize.DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: false,
       },
       visitDate: {
@@ -69,6 +65,15 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.NOW,
         allowNull: false,
       },
+      createdAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+      updatedAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+
     });
   },
 
@@ -79,5 +84,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
+
+    await queryInterface.dropTable('jobOrders')
   }
 };
