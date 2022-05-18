@@ -2,14 +2,10 @@
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
-     await queryInterface.createTable('administrations', {
-      adminId: {
+  
+     
+    await queryInterface.createTable('administrators', {
+      id: {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -17,23 +13,93 @@ module.exports = {
       name: {
         type: Sequelize.DataTypes.STRING(50),
         allowNull: false,
-      },      
-      telephone: {
-        type: Sequelize.DataTypes.DATE,
+      }, 
+      lastName: {
+        type: Sequelize.DataTypes.STRING(50),
         allowNull: false,
-      },      
-      celPhone: {
-        type: Sequelize.DataTypes.STRING(20),
+      }, 
+      email: {
+        type: Sequelize.DataTypes.STRING(50),        
+      }, 
+      cellPhone: {
+        type: Sequelize.DataTypes.STRING(30),        
+      },     
+      createdAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+      updatedAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+    });    
+    await queryInterface.createTable('address', {
+      id: {
+        type: Sequelize.DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },     
+      address: {
+        type: Sequelize.DataTypes.STRING(50),
+        allowNull: false,
+      }, 
+      address2: {
+        type: Sequelize.DataTypes.STRING(50),
+        allowNull: false,
+      }, 
+      locality: {
+        type: Sequelize.DataTypes.STRING(50),
+        allowNull: false,
+      }, 
+      postCode: {
+        type: Sequelize.DataTypes.STRING(50),        
+      }, 
+      country: {
+        type: Sequelize.DataTypes.STRING(30),        
+      },     
+      createdAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+      updatedAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+    });    
+    await queryInterface.createTable('administrations', {
+      id: {
+        type: Sequelize.DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },     
+      name: {
+        type: Sequelize.DataTypes.STRING(50),
         allowNull: false,
       },
       email: {
         type: Sequelize.DataTypes.STRING(50),
         allowNull: false,
       },
-      address: {
-        type: Sequelize.DataTypes.STRING(50),
+      administratorId: {
+        type: Sequelize.DataTypes.INTEGER,
+        references:{
+          model:{
+            tableName:'administrators'            
+          },
+          key:'id'
+        },
         allowNull: false,
-      },
+      }, 
+      addressId: {
+        type: Sequelize.DataTypes.INTEGER,
+        references:{
+          model:{
+            tableName:'address'            
+          },
+          key:'id'
+        },
+        allowNull: false,
+      },     
       state: {
         type: Sequelize.DataTypes.ENUM('alta', 'baja'),
         defaultValue: 'alta',
@@ -48,14 +114,48 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.NOW,
       },
     });
+    await queryInterface.createTable('admin_telephone', {
+      id: {
+        type: Sequelize.DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },     
+      prefix: {
+        type: Sequelize.DataTypes.STRING(7),
+        allowNull: false,
+      }, 
+      phone: {
+        type: Sequelize.DataTypes.STRING(20),
+        allowNull: false,
+      }, 
+      description: {
+        type: Sequelize.DataTypes.ENUM('contacto','emergencias'),
+        allowNull: false,
+      }, 
+      administrationId: {
+        type: Sequelize.DataTypes.INTEGER,
+        allowNull: false,
+        references:{
+          model:{
+            tableName:'administrations'            
+          },
+          key:'id'
+        }
+      },     
+      createdAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+      updatedAt: {
+        type: Sequelize.DataTypes.DATE,
+        defaultValue: Sequelize.DataTypes.NOW,
+      },
+    });
   },
-
   async down (queryInterface, Sequelize) {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
-  }
+    await queryInterface.dropTable('admin_telephone'); 
+    await queryInterface.dropTable('address'); 
+    await queryInterface.dropTable('administrators');  
+    await queryInterface.dropTable('administrations');
+  }  
 };
