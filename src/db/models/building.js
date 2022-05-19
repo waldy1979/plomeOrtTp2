@@ -22,11 +22,15 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING(50),
 				allowNull: false,
 			},
-			locality: {
+			city: {
 				type: DataTypes.STRING(40),
 				allowNull: false,
 			},
-			attendant: {
+			manager: {
+				type: DataTypes.STRING(40),
+				allowNull: false,
+			},
+			cellPhone: {
 				type: DataTypes.STRING(40),
 				allowNull: false,
 			},

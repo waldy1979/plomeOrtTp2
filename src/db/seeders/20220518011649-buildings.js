@@ -1,35 +1,25 @@
 'use strict'
+const { randAddress, randFullName, randPhoneNumber } = require('@ngneat/falso')
 
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.bulkInsert(
-			'buildings',
-			[
-				{
-					address: 'Rivadavia 123',
-					locality: 'CABA',
-					attendant: 'Pepe',
-					createdAt: new Date(),
-					updatedAt: new Date(),
-				},
-				{
-					address: 'Sarmiento 254',
-					locality: 'CABA',
-					attendant: 'Cacho',
-					createdAt: new Date(),
-					updatedAt: new Date(),
-				},
-			],
-			{},
-		)
+		let buildings = []
+
+		for (let index = 0; index < 100; index++) {
+			const bulkAddress = randAddress()
+			buildings.push({
+				address: bulkAddress.street,
+				city: bulkAddress.city,
+				manager: randFullName(),
+				cellPhone: randPhoneNumber({ countryCode: 'AR' }),
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			})
+		}
+		await queryInterface.bulkInsert('buildings', buildings, {})
 	},
 
 	async down(queryInterface, Sequelize) {
-		/**
-		 * Add commands to revert seed here.
-		 *
-		 * Example:
-		 * await queryInterface.bulkDelete('People', null, {});
-		 */
+		await queryInterface.bulkDelete('buildings', null, {})
 	},
 }
