@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.DataTypes.STRING(50),        
       }, 
       cellPhone: {
-        type: Sequelize.DataTypes.STRING(30),        
+        type: Sequelize.DataTypes.STRING(60),        
       },     
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -55,7 +55,7 @@ module.exports = {
         type: Sequelize.DataTypes.STRING(50),        
       }, 
       country: {
-        type: Sequelize.DataTypes.STRING(30),        
+        type: Sequelize.DataTypes.STRING(100),        
       },     
       createdAt: {
         type: Sequelize.DataTypes.DATE,
@@ -114,18 +114,14 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.NOW,
       },
     });
-    await queryInterface.createTable('admin_telephone', {
+    await queryInterface.createTable('admin_telephones', {
       id: {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-      },     
-      prefix: {
-        type: Sequelize.DataTypes.STRING(7),
-        allowNull: false,
       }, 
       phone: {
-        type: Sequelize.DataTypes.STRING(20),
+        type: Sequelize.DataTypes.STRING(60),
         allowNull: false,
       }, 
       description: {
@@ -153,9 +149,10 @@ module.exports = {
     });
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('admin_telephone'); 
+    await queryInterface.dropTable('admin_telephones');
+    await queryInterface.dropTable('administrations'); 
     await queryInterface.dropTable('address'); 
     await queryInterface.dropTable('administrators');  
-    await queryInterface.dropTable('administrations');
+    
   }  
 };
