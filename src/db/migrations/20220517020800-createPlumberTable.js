@@ -1,7 +1,5 @@
 'use strict';
 
-const { DataTypes, Sequelize } = require("sequelize/types");
-
 module.exports = {
   async up(queryInterface, Sequelize) {
     /**
@@ -10,8 +8,13 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
+
+
+    /* npx sequelize-cli model:generate --name Plumber --attributes firstName:string,lastName:string,email:string,identificationNumber:string,birthDate:date,nationality:string,celPhone:string,address:string */
+
+
     await queryInterface.createTable('plumbers', {
-      plumberId: {
+      id: {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -36,12 +39,12 @@ module.exports = {
         type: Sequelize.DataTypes.DATE,
         allowNull: false,
       },
-      Nationality: {
-        type: Sequelize.DataTypes.STRING(30),
+      nationality: {
+        type: Sequelize.DataTypes.STRING(75),
         allowNull: false,
       },
       celPhone: {
-        type: Sequelize.DataTypes.STRING(20),
+        type: Sequelize.DataTypes.STRING(50),
         allowNull: false,
       },
       email: {
