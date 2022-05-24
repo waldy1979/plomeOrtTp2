@@ -80,6 +80,10 @@ module.exports = {
         type: Sequelize.DataTypes.STRING(50),
         allowNull: false,
       },
+      discount: {
+        type: Sequelize.DataTypes.FLOAT,
+        default: 0,
+      },
       administratorId: {
         type: Sequelize.DataTypes.INTEGER,
         references:{

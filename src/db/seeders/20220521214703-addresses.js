@@ -1,5 +1,5 @@
 'use strict';
-const {randStreetAddress, randCity, randZipCode,randCountryCode,randCounty} = require('@ngneat/falso')
+const {randStreetAddress, randCity, randZipCode,randCountry,randCounty} = require('@ngneat/falso')
 module.exports = {
   async up (queryInterface, Sequelize) {
     let addresses = []
@@ -10,7 +10,7 @@ module.exports = {
         address2: randCounty(),
         locality:randCity(),
         postCode:randZipCode(),
-        country:randCountryCode(),
+        country:randCountry(),
         createdAt : new Date,
         updatedAt : new Date,
       })

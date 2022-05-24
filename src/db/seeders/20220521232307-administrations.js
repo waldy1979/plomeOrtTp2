@@ -8,6 +8,7 @@ module.exports = {
       administrations.push({
         name: randFirstName(),
         email:randEmail(),
+        discount:randNumber({min:1,max:15}),
         administratorId:randNumber({min:1,max:40}),
         addressId:randNumber({min:1,max:40}),
         state:'alta',

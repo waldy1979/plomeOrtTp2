@@ -27,6 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(50),
       allowNull: false,
     },
+    discount: {
+      type: Sequelize.DataTypes.FLOAT,
+      default: 0,
+    },
     administratorId: {
       type: DataTypes.INTEGER,
       references:{
