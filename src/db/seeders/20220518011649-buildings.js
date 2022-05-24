@@ -23,3 +23,5 @@ module.exports = {
 		await queryInterface.bulkDelete('buildings', null, {})
 	},
 }
+
+// npx sequelize-cli db:seed:all

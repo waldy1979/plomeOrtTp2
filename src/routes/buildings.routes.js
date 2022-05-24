@@ -8,9 +8,13 @@ const {
 	deleteBuilding,
 } = require('../controllers/buildings.controller')
 
+// router.route('/').get(getBuildings).post(postBuilding)
+
+// router.route('/:id').get(getBuilding).put(putBuilding).delete(deleteBuilding)
+
 router.get('/', getBuildings)
 
-router.get('/:id?', getBuilding)
+router.get('/:id', getBuilding)
 
 router.post('/', postBuilding)
 

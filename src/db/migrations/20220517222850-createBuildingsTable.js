@@ -39,3 +39,5 @@ module.exports = {
 		await queryInterface.dropTable('buildings')
 	},
 }
+
+// npx sequelize-cli db:migrate
