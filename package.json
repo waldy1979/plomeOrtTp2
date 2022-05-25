@@ -1,33 +1,39 @@
 {
-  "name": "plomeorttp2",
-  "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/waldy1979/plomeOrtTp2.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/waldy1979/plomeOrtTp2/issues"
-  },
-  "homepage": "https://github.com/waldy1979/plomeOrtTp2#readme",
-  "dependencies": {
-    "@ngneat/falso": "^5.3.0",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
-    "mysql2": "^2.3.3",
-    "sequelize": "^6.19.1"
-  },
-  "keywords": [],
-  "description": "",
-  "devDependencies": {
-    "sequelize-cli": "^6.4.1"
-  }
+	"name": "plomeorttp2",
+	"version": "1.0.0",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"start": "node index.js",
+		"dev": "nodemon index.js",
+		"test": "mocha"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/waldy1979/plomeOrtTp2.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/waldy1979/plomeOrtTp2/issues"
+	},
+	"homepage": "https://github.com/waldy1979/plomeOrtTp2#readme",
+	"dependencies": {
+		"@ngneat/falso": "^5.3.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.1",
+		"express": "^4.18.1",
+		"mysql2": "^2.3.3",
+		"sequelize": "^6.19.0"
+	},
+	"keywords": [],
+	"description": "",
+	"devDependencies": {
+		"chai": "^4.3.6",
+		"mocha": "^10.0.0",
+		"nodemon": "^2.0.16",
+		"sequelize-cli": "^6.4.1"
+	}
 }
