@@ -1,11 +1,53 @@
 const express = require('express')
 const app = express()
-const { Plumber } = require('./src/db/models')  /* va por defecto a buscar al index de models y tare el objeto db y por destructuracion, solo me quedo con el objeto Plumbers*/
+const {Administrator,Administration, Plumber } = require('./src/db/models')
 
 app.get('/', function (req, res) {
-    res.send('Hello')
+    res.send('hay un server corriendo...')
 })
 
+//Administrations 
+app.get('/administrations', async function (req, res) {
+    let data = await Administration.findAll()
+    res.send(data)
+})
+app.get('/administrations/:id', async function (req, res) {
+    let data = await Administration.findByPk(req.params.id)
+    res.send(data)
+})
+app.get('/administrations-create', async function (req, res) {
+    await Administration.create({
+        name : "Ramon",
+        lastName : "Medina Bello",
+        email : "un@email.com",
+        cellPhone:"15 5700-5670"
+    })
+    res.send('Created')
+})
+//fin administrations
+
+
+//Administrators 
+app.get('/administrators', async function (req, res) {
+    let data = await Administrator.findAll()
+    res.send(data)
+})
+app.get('/administrators/:id', async function (req, res) {
+    let data = await Administrator.findByPk(req.params.id)
+    res.send(data)
+})
+app.get('/administrators-create', async function (req, res) {
+    await Administrator.create({
+        name : "Ramon",
+        lastName : "Medina Bello",
+        email : "un@email.com",
+        cellPhone:"15 5700-5670"
+    })
+    res.send('Created')
+})
+//fin administrators
+
+//Plumbers
 app.get('/plumbers', async function (req, res) {
     let data = await Plumber.findAll()
     res.send(data)
@@ -15,6 +57,4 @@ app.get('/plumbers/:id', async function (req, res) {
     let data = await Plumber.findByPk(req.params.id)
     res.send(data)
 })
-
-
-app.listen(3000)
+app.listen(6001)
