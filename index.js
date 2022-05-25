@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 	res.send('Hola Mundo!!!')
 })
 
-app.use('/buildings', require('./routes/buildings.routes'))
+app.use('/buildings', require('./src/routes/buildings.routes'))
 
 app.listen(app.get('port'), () => {
 	console.log(`Server on port ${app.get('port')}!`)
