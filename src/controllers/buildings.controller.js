@@ -1,6 +1,6 @@
 const { Building } = require('../db/models')
 
-exports.getBuildings = async (req, res) => {
+exports.listBuildings = async (req, res) => {
 	try {
 		const buildings = await Building.findAll()
 		res.status(200).json({ buildings })
@@ -21,7 +21,7 @@ exports.getBuilding = async (req, res) => {
 	}
 }
 
-exports.postBuilding = async (req, res) => {
+exports.addBuilding = async (req, res) => {
 	try {
 		const { dataValues: building } = await Building.create(req.body)
 		res.status(201).json({ building })
@@ -31,7 +31,7 @@ exports.postBuilding = async (req, res) => {
 	}
 }
 
-exports.putBuilding = async (req, res) => {
+exports.updateBuilding = async (req, res) => {
 	try {
 		const { id } = req.params
 		await Building.update(req.body, { where: { id } })
@@ -42,7 +42,7 @@ exports.putBuilding = async (req, res) => {
 	}
 }
 
-exports.deleteBuilding = async (req, res) => {
+exports.removeBuilding = async (req, res) => {
 	try {
 		const { id } = req.params
 		const building = await Building.findByPk(req.params.id)

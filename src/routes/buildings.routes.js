@@ -1,25 +1,25 @@
 const express = require('express')
 const router = express.Router()
 const {
-	getBuildings,
+	listBuildings,
 	getBuilding,
-	postBuilding,
-	putBuilding,
-	deleteBuilding,
+	addBuilding,
+	updateBuilding,
+	removeBuilding,
 } = require('../controllers/buildings.controller')
 
-// router.route('/').get(getBuildings).post(postBuilding)
+// router.route('/').get(listBuildings).post(addBuilding)
 
-// router.route('/:id').get(getBuilding).put(putBuilding).delete(deleteBuilding)
+// router.route('/:id').get(getBuilding).put(updateBuilding).delete(removeBuilding)
 
-router.get('/', getBuildings)
+router.get('/', listBuildings)
 
 router.get('/:id', getBuilding)
 
-router.post('/', postBuilding)
+router.post('/', addBuilding)
 
-router.put('/:id', putBuilding)
+router.put('/:id', updateBuilding)
 
-router.delete('/:id', deleteBuilding)
+router.delete('/:id', removeBuilding)
 
 module.exports = router
