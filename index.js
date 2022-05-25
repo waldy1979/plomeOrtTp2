@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const {Administrator,Administration, Plumber } = require('./src/db/models')
+const { Administrator, Administration, Plumber } = require('./src/db/models')
 
 app.get('/', function (req, res) {
     res.send('hay un server corriendo...')
@@ -17,10 +17,10 @@ app.get('/administrations/:id', async function (req, res) {
 })
 app.get('/administrations-create', async function (req, res) {
     await Administration.create({
-        name : "Ramon",
-        lastName : "Medina Bello",
-        email : "un@email.com",
-        cellPhone:"15 5700-5670"
+        name: "Ramon",
+        lastName: "Medina Bello",
+        email: "un@email.com",
+        cellPhone: "15 5700-5670"
     })
     res.send('Created')
 })
@@ -38,10 +38,10 @@ app.get('/administrators/:id', async function (req, res) {
 })
 app.get('/administrators-create', async function (req, res) {
     await Administrator.create({
-        name : "Ramon",
-        lastName : "Medina Bello",
-        email : "un@email.com",
-        cellPhone:"15 5700-5670"
+        name: "Ramon",
+        lastName: "Medina Bello",
+        email: "un@email.com",
+        cellPhone: "15 5700-5670"
     })
     res.send('Created')
 })
