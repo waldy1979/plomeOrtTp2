@@ -2,7 +2,7 @@ const { Building } = require('../db/models')
 
 exports.listBuildings = async (req, res) => {
 	try {
-		const buildings = await Building.findAll()
+		const buildings = await Building.findAll({ where: req.query, limit: 100 })
 		res.status(200).json({ buildings })
 	} catch (error) {
 		console.error(error)

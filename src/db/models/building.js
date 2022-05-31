@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
 		 * The `models/index` file will call this method automatically.
 		 */
 		static associate(models) {
-			// define association here
+			Building.belongsTo(models.Administration)
+			Building.hasMany(models.jobOrders)
 		}
 	}
 	Building.init(
@@ -32,6 +33,16 @@ module.exports = (sequelize, DataTypes) => {
 			},
 			cellPhone: {
 				type: DataTypes.STRING(40),
+				allowNull: false,
+			},
+			administrationId: {
+				type: DataTypes.INTEGER,
+				references: {
+					model: {
+						tableName : 'administrations'
+					} 
+					key: 'id'
+				}
 				allowNull: false,
 			},
 			createdAt: {
