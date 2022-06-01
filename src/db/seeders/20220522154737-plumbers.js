@@ -1,33 +1,40 @@
-'use strict';
+'use strict'
 
-const { randFirstName, randLastName, randNumber, randPhoneNumber, randStreetAddress, randCountry, randEmail, randPastDate } = require('@ngneat/falso');
+const {
+	randFirstName,
+	randLastName,
+	randNumber,
+	randPhoneNumber,
+	randStreetAddress,
+	randCountry,
+	randEmail,
+	randPastDate,
+} = require('@ngneat/falso')
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+	async up(queryInterface, Sequelize) {
+		let plumbers = []
 
-    let plumbers = []
+		for (var i = 0; i < 20; i++) {
+			plumbers.push({
+				firstName: randFirstName(),
+				lastName: randLastName(),
+				birthDate: randPastDate(),
+				nationality: randCountry(),
+				email: randEmail(),
+				identificationNumber: randNumber({ min: 500000, max: 50000000 }),
+				celPhone: randPhoneNumber(),
+				address: randStreetAddress(),
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			})
+		}
 
-    for (var i = 0; i < 400; i++) {
-      plumbers.push({
-        firstName: randFirstName(),
-        lastName: randLastName(),
-        birthDate: randPastDate(),
-        nationality: randCountry(),
-        email: randEmail(),
-        identificationNumber: randNumber({ min: 500000, max: 50000000 }),
-        celPhone: randPhoneNumber(),
-        address: randStreetAddress(),
-        createdAt: new Date,
-        updatedAt: new Date,
-      })
+		/* await para usar falsos */
+		await queryInterface.bulkInsert('plumbers', plumbers, {})
 
-    }
-
-    /* await para usar falsos */
-    await queryInterface.bulkInsert('plumbers', plumbers, {});
-
-    /* await para usar ingresos manuales */
-    /* await queryInterface.bulkInsert('plumbers', [{
+		/* await para usar ingresos manuales */
+		/* await queryInterface.bulkInsert('plumbers', [{
 
       firstName: 'John',
       lastName: 'Doe',
@@ -41,15 +48,15 @@ module.exports = {
       updatedAt: new Date,
 
     }], {}); */
-  },
+	},
 
-  async down(queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
-    await queryInterface.bulkDelete('plumbers', null, {});
-  }
-};
+	async down(queryInterface, Sequelize) {
+		/**
+		 * Add commands to revert seed here.
+		 *
+		 * Example:
+		 * await queryInterface.bulkDelete('People', null, {});
+		 */
+		await queryInterface.bulkDelete('plumbers', null, {})
+	},
+}

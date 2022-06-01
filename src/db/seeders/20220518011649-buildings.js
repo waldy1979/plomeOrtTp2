@@ -1,5 +1,10 @@
 'use strict'
-const { randAddress, randFullName, randPhoneNumber } = require('@ngneat/falso')
+const {
+	randAddress,
+	randFullName,
+	randPhoneNumber,
+	randNumber,
+} = require('@ngneat/falso')
 
 module.exports = {
 	async up(queryInterface, Sequelize) {
@@ -12,6 +17,7 @@ module.exports = {
 				city: bulkAddress.city,
 				manager: randFullName(),
 				cellPhone: randPhoneNumber({ countryCode: 'AR' }),
+				administrationId: randNumber({ min: 1, max: 20 }),
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			})
