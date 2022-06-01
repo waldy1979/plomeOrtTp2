@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Building.belongsTo(models.Administration)
-			Building.hasMany(models.jobOrders)
+			Building.hasMany(models.JobOrder)
 		}
 	}
 	Building.init(
@@ -39,10 +39,10 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				references: {
 					model: {
-						tableName : 'administrations'
-					} 
-					key: 'id'
-				}
+						tableName: 'administrations',
+					},
+					key: 'id',
+				},
 				allowNull: false,
 			},
 			createdAt: {
