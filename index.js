@@ -20,7 +20,10 @@ app.get('/', function (req, res) {
 //Administrations
 app.get('/administrations', async function (req, res) {
 	let data = await Administration.findAll(
-		{include: 'Administrator',}
+		{
+			include: ['Address','Administrator']
+			
+		}
 	)
 	res.send(data)
 })

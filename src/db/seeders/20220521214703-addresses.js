@@ -21,10 +21,10 @@ module.exports = {
 				updatedAt: new Date(),
 			})
 		}
-		await queryInterface.bulkInsert('address', addresses, {})
+		await queryInterface.bulkInsert('addresses', addresses, {})
 	},
 
 	async down(queryInterface, Sequelize) {
-		await queryInterface.bulkDelete('address', null, {})
+		await queryInterface.bulkDelete('addresses', null, {})
 	},
 }
