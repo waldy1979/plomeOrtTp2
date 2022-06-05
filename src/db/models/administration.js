@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 			Administration.hasMany(models.Building)
 			Administration.belongsTo(models.Administrator)
 			Administration.belongsTo(models.Address)
+			Administration.hasMany(models.AdminTelephone)
 		}
 	}
 	Administration.init(

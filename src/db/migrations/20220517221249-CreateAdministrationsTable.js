@@ -118,7 +118,7 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.NOW,
       },
     });
-    await queryInterface.createTable('admin_telephones', {
+    await queryInterface.createTable('admintelephones', {
       id: {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
@@ -153,7 +153,7 @@ module.exports = {
     });
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('admin_telephones');
+    await queryInterface.dropTable('admintelephones');
     await queryInterface.dropTable('administrations'); 
     await queryInterface.dropTable('addresses'); 
     await queryInterface.dropTable('administrators');  

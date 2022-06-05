@@ -21,8 +21,7 @@ app.get('/', function (req, res) {
 app.get('/administrations', async function (req, res) {
 	let data = await Administration.findAll(
 		{
-			include: ['Address','Administrator']
-			
+			include: ['Address','Administrator','AdminTelephones']			
 		}
 	)
 	res.send(data)
