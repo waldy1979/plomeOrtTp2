@@ -19,7 +19,9 @@ app.get('/', function (req, res) {
 
 //Administrations
 app.get('/administrations', async function (req, res) {
-	let data = await Administration.findAll()
+	let data = await Administration.findAll(
+		{include: 'Administrator',}
+	)
 	res.send(data)
 })
 app.get('/administrations/:id', async function (req, res) {

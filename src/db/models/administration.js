@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Administration.hasMany(models.Building)
+			Administration.belongsTo(models.Administrator)
 		}
 	}
 	Administration.init(
