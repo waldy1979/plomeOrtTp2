@@ -5,7 +5,7 @@ exports.listBuildings = async (req, res) => {
 		const buildings = await Building.findAll({
 			where: req.query,
 			limit: 100,
-			include: 'Administration',
+			// include: 'Administration',
 		})
 		res.status(200).json({ buildings })
 	} catch (error) {
