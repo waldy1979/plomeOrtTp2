@@ -18,23 +18,7 @@ app.get('/', function (req, res) {
 })
 
 //Administrations
-app.get('/administrations', async function (req, res) {
-	let data = await Administration.findAll()
-	res.send(data)
-})
-app.get('/administrations/:id', async function (req, res) {
-	let data = await Administration.findByPk(req.params.id)
-	res.send(data)
-})
-app.get('/administrations-create', async function (req, res) {
-	await Administration.create({
-		name: 'Ramon',
-		lastName: 'Medina Bello',
-		email: 'un@email.com',
-		cellPhone: '15 5700-5670',
-	})
-	res.send('Created')
-})
+app.use('/administrations', require('./src/routes/administrations.routes'))
 //fin administrations
 
 //Administrators

@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Administration.hasMany(models.Building)
+			Administration.belongsTo(models.Administrator)
+			Administration.belongsTo(models.Address)
+			Administration.hasMany(models.AdminTelephone,{onDelete:'cascade'})
 		}
 	}
 	Administration.init(
@@ -44,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.INTEGER,
 				references: {
 					model: {
-						tableName: 'address',
+						tableName: 'addresses',
 					},
 					key: 'id',
 				},

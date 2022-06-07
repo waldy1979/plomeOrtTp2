@@ -33,7 +33,7 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.NOW,
       },
     });    
-    await queryInterface.createTable('address', {
+    await queryInterface.createTable('addresses', {
       id: {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
@@ -98,7 +98,7 @@ module.exports = {
         type: Sequelize.DataTypes.INTEGER,
         references:{
           model:{
-            tableName:'address'            
+            tableName:'addresses'            
           },
           key:'id'
         },
@@ -118,7 +118,7 @@ module.exports = {
         defaultValue: Sequelize.DataTypes.NOW,
       },
     });
-    await queryInterface.createTable('admin_telephones', {
+    await queryInterface.createTable('admintelephones', {
       id: {
         type: Sequelize.DataTypes.INTEGER,
         primaryKey: true,
@@ -153,10 +153,12 @@ module.exports = {
     });
   },
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('admin_telephones');
+    await queryInterface.dropTable('admintelephones');
     await queryInterface.dropTable('administrations'); 
-    await queryInterface.dropTable('address'); 
+    await queryInterface.dropTable('addresses'); 
     await queryInterface.dropTable('administrators');  
     
   }  
 };
+//npx sequelize-cli db:migrate 
+//npx sequelize-cli db:migrate:undo:all
