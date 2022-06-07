@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING(40),
 				allowNull: false,
 			},
-			administrationId: {
+			AdministrationId: {
 				type: DataTypes.INTEGER,
 				references: {
 					model: {
