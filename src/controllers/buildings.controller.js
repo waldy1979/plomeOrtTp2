@@ -1,4 +1,4 @@
-const { Building } = require('../db/models')
+const { Building, Administration } = require('../db/models')
 
 exports.listBuildings = async (req, res) => {
 	try {
@@ -26,9 +26,22 @@ exports.getBuilding = async (req, res) => {
 }
 
 exports.addBuilding = async (req, res) => {
+	const { address, city, manager, cellPhone, AdministrationId } = req.body
 	try {
-		const { dataValues: building } = await Building.create(req.body)
-		res.status(201).json({ building })
+		if (
+			stringIsNotBlankAndNotLongerThan(address, 50) &&
+			stringIsNotBlankAndNotLongerThan(city, 40) &&
+			stringIsNotBlankAndNotLongerThan(manager, 40) &&
+			stringIsNotBlankAndNotLongerThan(cellPhone, 40)
+			// &&
+			// buildingIsUnique(address, city) &&
+			// adminIdExists(AdministrationId)
+		) {
+			const { dataValues: building } = await Building.create(req.body)
+			res.status(201).json({ building })
+		} else {
+			res.status(422).send('Invalid data')
+		}
 	} catch (error) {
 		console.error(error)
 		res.status(500).send('Hubo un error')
@@ -58,4 +71,18 @@ exports.removeBuilding = async (req, res) => {
 		console.error(error)
 		res.status(500).send('Hubo un error')
 	}
+}
+
+const adminIdExists = id => {
+	Administration.count({ where: id }).then(count => (count > 0 ? true : false))
+}
+
+const buildingIsUnique = (address, city) => {
+	Building.count({ where: address, city }).then(count =>
+		count == 0 ? true : false,
+	)
+}
+
+const stringIsNotBlankAndNotLongerThan = (string, length) => {
+	return string && string.trim().length > 0 && string.length <= length
 }
