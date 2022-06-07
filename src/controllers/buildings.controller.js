@@ -1,4 +1,5 @@
 const { Building, Administration } = require('../db/models')
+const { stringIsNotBlankAndNotLongerThan, adminIdExists } = require('../utils')
 
 exports.listBuildings = async (req, res) => {
 	try {
@@ -32,10 +33,9 @@ exports.addBuilding = async (req, res) => {
 			stringIsNotBlankAndNotLongerThan(address, 50) &&
 			stringIsNotBlankAndNotLongerThan(city, 40) &&
 			stringIsNotBlankAndNotLongerThan(manager, 40) &&
-			stringIsNotBlankAndNotLongerThan(cellPhone, 40)
-			// &&
-			// buildingIsUnique(address, city) &&
-			// adminIdExists(AdministrationId)
+			stringIsNotBlankAndNotLongerThan(cellPhone, 40) &&
+			this.buildingIsUnique(address, city) &&
+			adminIdExists(AdministrationId)
 		) {
 			const { dataValues: building } = await Building.create(req.body)
 			res.status(201).json({ building })
@@ -73,16 +73,8 @@ exports.removeBuilding = async (req, res) => {
 	}
 }
 
-const adminIdExists = id => {
-	Administration.count({ where: id }).then(count => (count > 0 ? true : false))
-}
-
-const buildingIsUnique = (address, city) => {
-	Building.count({ where: address, city }).then(count =>
+exports.buildingIsUnique = (address, city) => {
+	Building.count({ where: { address, city } }).then(count =>
 		count == 0 ? true : false,
 	)
-}
-
-const stringIsNotBlankAndNotLongerThan = (string, length) => {
-	return string && string.trim().length > 0 && string.length <= length
 }
