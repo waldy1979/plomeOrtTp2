@@ -1,5 +1,33 @@
 const axios = require('axios')
 const { assert } = require('chai')
+const { Building } = require('../src/db/models')
+const { buildingIsUnique } = require('../src/controllers/buildings.controller')
+
+describe('Building is Unique', () => {
+	let id
+	beforeEach(async () => {
+		const { dataValues: building } = await Building.create({
+			address: 'abc',
+			city: 'def',
+			manager: 'a',
+			cellPhone: 'a',
+			AdministrationId: 1,
+		})
+		id = building.id
+	})
+
+	afterEach(async () => {
+		await Building.destroy({ where: { id } })
+	})
+
+	it('Debe devolver FALSE si le paso el que ya existe', async () => {
+		assert.equal(await buildingIsUnique('abc', 'def'), false)
+	})
+
+	it('Debe devolver TRUE si le paso uno que no hay', async () => {
+		assert.equal(await buildingIsUnique('kuhtcrchk', 'kuhtcrchk'), true)
+	})
+})
 
 describe('Building Create', () => {
 	/*
@@ -20,14 +48,37 @@ describe('Building Create', () => {
 			cellPhone: 'a',
 			AdministrationId: 1,
 		}
+
+		// 	axios
+		// 		.post('http://localhost:2999/buildings', building)
+		// 		.then(
+		// 			({
+		// 				status,
+		// 				data: {
+		// 					building: { id },
+		// 				},
+		// 			}) => {
+		// 				assert.equal(status, 201)
+		// 				console.log(id)
+		// 				done()
+		// 			},
+		// 		)
+		// 		.catch(error => {
+		// 			console.log(error.message)
+		// 			assert.equal(error.response.status, '')
+		// 			done()
+		// 		})
 		try {
 			const { status, data } = await axios.post(
 				'http://localhost:2999/buildings',
 				building,
 			)
 			assert.equal(status, 201)
-			await axios.delete(`http://localhost:2999/buildings/${data.building.id}`)
-		} catch (error) {}
+			await axios.delete('http://localhost:2999/buildings/' + data.building.id)
+		} catch (error) {
+			console.log(error.message)
+			assert.equal(error.message, '')
+		}
 	})
 
 	it('Si se completan los datos máximos por campo debe permitir la carga ', async () => {
@@ -44,8 +95,11 @@ describe('Building Create', () => {
 				building,
 			)
 			assert.equal(status, 201)
-			await axios.delete(`http://localhost:2999/buildings/${data.building.id}`)
-		} catch (error) {}
+			await axios.delete('http://localhost:2999/buildings/' + data.building.id)
+		} catch (error) {
+			console.log(error.message)
+			assert.equal(error.message, '')
+		}
 	})
 
 	it('Si falta address, no debe permitir la carga ', async () => {
@@ -127,7 +181,7 @@ describe('Building Create', () => {
 		const building = {
 			address: 'Test',
 			city: 'Test',
-			manager: 'abcde12345fghij67890abcde12345fghij67890',
+			manager: 'abcde12345fghij67890abcde12345fghij67890+',
 			cellPhone: 'Test',
 			AdministrationId: 1,
 		}
@@ -158,7 +212,7 @@ describe('Building Create', () => {
 			address: 'Test',
 			city: 'Test',
 			manager: 'Test',
-			cellPhone: 'abcde12345fghij67890abcde12345fghij67890',
+			cellPhone: 'abcde12345fghij67890abcde12345fghij67890+',
 			AdministrationId: 1,
 		}
 		try {
@@ -167,4 +221,27 @@ describe('Building Create', () => {
 			assert.equal(error.response.status, 422)
 		}
 	})
+
+	// it('Si se cargan dos edificios con la misma dirección no permite la carga', async () => {
+	// 	const building = {
+	// 		address: 'abc',
+	// 		city: 'def',
+	// 		manager: 'a',
+	// 		cellPhone: 'a',
+	// 		AdministrationId: 1,
+	// 	}
+	// 	let id
+	// 	try {
+	// 		const { status, data } = await axios.post(
+	// 			'http://localhost:2999/buildings',
+	// 			building,
+	// 		)
+	// 		assert.equal(status, 201, 'Test creado')
+	// 		console.log(data.building)
+	// 	} catch (error) {
+	// 		assert.equal(error.response.status, 422)
+	// 	} finally {
+	// 		// await axios.delete(`http://localhost:2999/buildings/${id}`)
+	// 	}
+	// })
 })
