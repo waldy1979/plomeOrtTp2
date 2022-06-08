@@ -46,7 +46,7 @@ app.use('/buildings', require('./src/routes/buildings.routes'))
 // Fin Buildings
 
 //Plumbers
-app.get('/plumbers', async function (req, res) {
+/* app.get('/plumbers', async function (req, res) {
 	let data = await Plumber.findAll()
 	res.send(data)
 })
@@ -54,7 +54,9 @@ app.get('/plumbers', async function (req, res) {
 app.get('/plumbers/:id', async function (req, res) {
 	let data = await Plumber.findByPk(req.params.id)
 	res.send(data)
-})
+}) */
+
+app.use('/plumbers', require('./src/routes/plumbers.routes'))
 //fin plumbers
 
 // SERVERT STARTER
