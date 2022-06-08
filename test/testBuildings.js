@@ -40,7 +40,7 @@ describe('Building Create', () => {
   Al agregar el domicilio se debe elegir la administración que usa, verificando su existencia previa.
   */
 
-	it('Si se completan los datos mínimos por campo debe permitir la carga ', async () => {
+	it('Si se completan los caracteres MÍNIMOS por campo debe permitir la carga ', async () => {
 		const building = {
 			address: 'a',
 			city: 'a',
@@ -49,39 +49,22 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 
-		// 	axios
-		// 		.post('http://localhost:2999/buildings', building)
-		// 		.then(
-		// 			({
-		// 				status,
-		// 				data: {
-		// 					building: { id },
-		// 				},
-		// 			}) => {
-		// 				assert.equal(status, 201)
-		// 				console.log(id)
-		// 				done()
-		// 			},
-		// 		)
-		// 		.catch(error => {
-		// 			console.log(error.message)
-		// 			assert.equal(error.response.status, '')
-		// 			done()
-		// 		})
 		try {
-			const { status, data } = await axios.post(
-				'http://localhost:2999/buildings',
-				building,
-			)
+			const {
+				status,
+				data: {
+					building: { id },
+				},
+			} = await axios.post('http://localhost:2999/buildings', building)
 			assert.equal(status, 201)
-			await axios.delete('http://localhost:2999/buildings/' + data.building.id)
+			await Building.destroy({ where: { id } })
 		} catch (error) {
 			console.log(error.message)
 			assert.equal(error.message, '')
 		}
 	})
 
-	it('Si se completan los datos máximos por campo debe permitir la carga ', async () => {
+	it('Si se completan los caracteres MÁXIMOS por campo debe permitir la carga ', async () => {
 		const building = {
 			address: 'abcde12345fghij67890abcde12345fghij67890abcde12345',
 			city: 'abcde12345fghij67890abcde12345fghij67890',
@@ -90,12 +73,14 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			const { status, data } = await axios.post(
-				'http://localhost:2999/buildings',
-				building,
-			)
+			const {
+				status,
+				data: {
+					building: { id },
+				},
+			} = await axios.post('http://localhost:2999/buildings', building)
 			assert.equal(status, 201)
-			await axios.delete('http://localhost:2999/buildings/' + data.building.id)
+			await Building.destroy({ where: { id } })
 		} catch (error) {
 			console.log(error.message)
 			assert.equal(error.message, '')
@@ -222,26 +207,25 @@ describe('Building Create', () => {
 		}
 	})
 
-	// it('Si se cargan dos edificios con la misma dirección no permite la carga', async () => {
-	// 	const building = {
-	// 		address: 'abc',
-	// 		city: 'def',
-	// 		manager: 'a',
-	// 		cellPhone: 'a',
-	// 		AdministrationId: 1,
-	// 	}
-	// 	let id
-	// 	try {
-	// 		const { status, data } = await axios.post(
-	// 			'http://localhost:2999/buildings',
-	// 			building,
-	// 		)
-	// 		assert.equal(status, 201, 'Test creado')
-	// 		console.log(data.building)
-	// 	} catch (error) {
-	// 		assert.equal(error.response.status, 422)
-	// 	} finally {
-	// 		// await axios.delete(`http://localhost:2999/buildings/${id}`)
-	// 	}
-	// })
+	it('Si se cargan dos edificios con la misma dirección no permite la carga', async () => {
+		const building = {
+			address: 'abc',
+			city: 'def',
+			manager: 'a',
+			cellPhone: 'a',
+			AdministrationId: 1,
+		}
+		const {
+			dataValues: { id },
+		} = await Building.create(building)
+		try {
+			const { status, data } = await axios.post(
+				'http://localhost:2999/buildings',
+				building,
+			)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+			await Building.destroy({ where: { id } })
+		}
+	})
 })
