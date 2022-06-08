@@ -1,5 +1,33 @@
 const axios = require('axios')
 const { assert } = require('chai')
+const { Building } = require('../src/db/models')
+const { buildingIsUnique } = require('../src/controllers/buildings.controller')
+
+describe('Building is Unique', () => {
+	let id
+	beforeEach(async () => {
+		const { dataValues: building } = await Building.create({
+			address: 'abc',
+			city: 'def',
+			manager: 'a',
+			cellPhone: 'a',
+			AdministrationId: 1,
+		})
+		id = building.id
+	})
+
+	afterEach(async () => {
+		await Building.destroy({ where: { id } })
+	})
+
+	it('Debe devolver FALSE si le paso el que ya existe', async () => {
+		assert.equal(await buildingIsUnique('abc', 'def'), false)
+	})
+
+	it('Debe devolver TRUE si le paso uno que no hay', async () => {
+		assert.equal(await buildingIsUnique('kuhtcrchk', 'kuhtcrchk'), true)
+	})
+})
 
 describe('Building Create', () => {
 	/*
@@ -12,7 +40,7 @@ describe('Building Create', () => {
   Al agregar el domicilio se debe elegir la administración que usa, verificando su existencia previa.
   */
 
-	it('Si se completan los datos mínimos por campo debe permitir la carga ', async () => {
+	it('Si se completan los caracteres MÍNIMOS por campo debe permitir la carga ', async () => {
 		const building = {
 			address: 'a',
 			city: 'a',
@@ -20,17 +48,23 @@ describe('Building Create', () => {
 			cellPhone: 'a',
 			AdministrationId: 1,
 		}
+
 		try {
-			const { status, data } = await axios.post(
-				'http://localhost:2999/buildings',
-				building,
-			)
+			const {
+				status,
+				data: {
+					building: { id },
+				},
+			} = await axios.post('http://localhost:2999/buildings', building)
 			assert.equal(status, 201)
-			await axios.delete(`http://localhost:2999/buildings/${data.building.id}`)
-		} catch (error) {}
+			await Building.destroy({ where: { id } })
+		} catch (error) {
+			console.log(error.message)
+			assert.equal(error.message, '')
+		}
 	})
 
-	it('Si se completan los datos máximos por campo debe permitir la carga ', async () => {
+	it('Si se completan los caracteres MÁXIMOS por campo debe permitir la carga ', async () => {
 		const building = {
 			address: 'abcde12345fghij67890abcde12345fghij67890abcde12345',
 			city: 'abcde12345fghij67890abcde12345fghij67890',
@@ -39,13 +73,18 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			const { status, data } = await axios.post(
-				'http://localhost:2999/buildings',
-				building,
-			)
+			const {
+				status,
+				data: {
+					building: { id },
+				},
+			} = await axios.post('http://localhost:2999/buildings', building)
 			assert.equal(status, 201)
-			await axios.delete(`http://localhost:2999/buildings/${data.building.id}`)
-		} catch (error) {}
+			await Building.destroy({ where: { id } })
+		} catch (error) {
+			console.log(error.message)
+			assert.equal(error.message, '')
+		}
 	})
 
 	it('Si falta address, no debe permitir la carga ', async () => {
@@ -127,7 +166,7 @@ describe('Building Create', () => {
 		const building = {
 			address: 'Test',
 			city: 'Test',
-			manager: 'abcde12345fghij67890abcde12345fghij67890',
+			manager: 'abcde12345fghij67890abcde12345fghij67890+',
 			cellPhone: 'Test',
 			AdministrationId: 1,
 		}
@@ -158,13 +197,35 @@ describe('Building Create', () => {
 			address: 'Test',
 			city: 'Test',
 			manager: 'Test',
-			cellPhone: 'abcde12345fghij67890abcde12345fghij67890',
+			cellPhone: 'abcde12345fghij67890abcde12345fghij67890+',
 			AdministrationId: 1,
 		}
 		try {
 			await axios.post('http://localhost:2999/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
+		}
+	})
+
+	it('Si se cargan dos edificios con la misma dirección no permite la carga', async () => {
+		const building = {
+			address: 'abc',
+			city: 'def',
+			manager: 'a',
+			cellPhone: 'a',
+			AdministrationId: 1,
+		}
+		const {
+			dataValues: { id },
+		} = await Building.create(building)
+		try {
+			const { status, data } = await axios.post(
+				'http://localhost:2999/buildings',
+				building,
+			)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+			await Building.destroy({ where: { id } })
 		}
 	})
 })

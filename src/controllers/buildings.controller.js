@@ -34,8 +34,8 @@ exports.addBuilding = async (req, res) => {
 			stringIsNotBlankAndNotLongerThan(city, 40) &&
 			stringIsNotBlankAndNotLongerThan(manager, 40) &&
 			stringIsNotBlankAndNotLongerThan(cellPhone, 40) &&
-			this.buildingIsUnique(address, city) &&
-			adminIdExists(AdministrationId)
+			(await this.buildingIsUnique(address, city)) &&
+			(await adminIdExists(AdministrationId))
 		) {
 			const { dataValues: building } = await Building.create(req.body)
 			res.status(201).json({ building })
@@ -73,8 +73,7 @@ exports.removeBuilding = async (req, res) => {
 	}
 }
 
-exports.buildingIsUnique = (address, city) => {
-	Building.count({ where: { address, city } }).then(count =>
-		count == 0 ? true : false,
-	)
+exports.buildingIsUnique = async (address, city) => {
+	const count = await Building.count({ where: { address, city } })
+	return count == 0 ? true : false
 }

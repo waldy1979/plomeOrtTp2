@@ -4,6 +4,7 @@ exports.stringIsNotBlankAndNotLongerThan = (string, length) => {
 	return string?.trim().length > 0 && string?.length <= length
 }
 
-exports.adminIdExists = id => {
-	Administration.count({ where: id }).then(count => (count > 0 ? true : false))
+exports.adminIdExists = async id => {
+	const count = await Administration.count({ where: id })
+	return count > 0 ? true : false
 }
