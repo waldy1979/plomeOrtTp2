@@ -64,7 +64,7 @@ exports.removeBuilding = async (req, res) => {
 		const { id } = req.params
 		const building = await Building.findByPk(req.params.id)
 		if (building) {
-			await Building.destroy({ where: { id } })
+			await building.destroy({ where: { id } })
 			res.status(204).send('OK')
 		} else res.status(404).send('No encontrado')
 	} catch (error) {
