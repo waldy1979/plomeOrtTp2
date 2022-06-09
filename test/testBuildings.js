@@ -207,7 +207,7 @@ describe('Building Create', () => {
 		}
 	})
 
-	it('Si se cargan dos edificios con la misma dirección no permite la carga', async () => {
+	it('Si se cargan dos edificios con la misma dirección debe informar error de duplicado', async () => {
 		const building = {
 			address: 'abc',
 			city: 'def',
@@ -224,7 +224,7 @@ describe('Building Create', () => {
 				building,
 			)
 		} catch (error) {
-			assert.equal(error.response.status, 422)
+			assert.equal(error.response.status, 409)
 			await Building.destroy({ where: { id } })
 		}
 	})
