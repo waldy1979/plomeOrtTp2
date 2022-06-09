@@ -1,10 +1,15 @@
-const { Administration,Administrator,AdminTelePhone,Address } = require('../db/models')
+const {
+	Administration,
+	Administrator,
+	AdminTelePhone,
+	Address,
+} = require('../db/models')
 
 exports.listAdministrations = async (req, res) => {
 	try {
 		const administrations = await Administration.findAll({
-			where: req.query,			
-			include: ['Address','Administrator','AdminTelephones'],
+			where: req.query,
+			include: ['Address', 'Administrator', 'AdminTelephones'],
 		})
 		res.status(200).json({ administrations })
 	} catch (error) {
@@ -15,7 +20,9 @@ exports.listAdministrations = async (req, res) => {
 
 exports.getAdministration = async (req, res) => {
 	try {
-		const administration = await Administration.findByPk(req.params.id,{include: ['Address','Administrator','AdminTelephones'],})
+		const administration = await Administration.findByPk(req.params.id, {
+			include: ['Address', 'Administrator', 'AdminTelephones'],
+		})
 		if (administration) res.status(200).json({ administration })
 		else res.status(404).send('No encontrada')
 	} catch (error) {
@@ -58,4 +65,8 @@ exports.removeAdministration = async (req, res) => {
 		console.error(error)
 		res.status(500).send('Hubo un error')
 	}
+}
+
+exports.adminIdExists = async id => {
+	return (await Administration.count({ where: id })) > 0
 }

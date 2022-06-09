@@ -1,5 +1,6 @@
 const { Building, Administration } = require('../db/models')
-const { stringIsNotBlankAndNotLongerThan, adminIdExists } = require('../utils')
+const { stringIsNotBlankAndNotLongerThan } = require('../utils')
+const { adminIdExists } = require('./administrations.controller')
 
 exports.listBuildings = async (req, res) => {
 	try {
@@ -28,12 +29,14 @@ exports.getBuilding = async (req, res) => {
 
 exports.addBuilding = async (req, res) => {
 	try {
-		const { address, city } = req.body
 		if (await validateBuildingParams(req.body)) {
+			const { address, city } = req.body
 			if (await this.buildingIsUnique(address, city)) {
 				const { dataValues: building } = await Building.create(req.body)
 				res.status(201).json({ building })
-			} else res.status(409).send('El edificio ya existe')
+			} else {
+				res.status(409).send('El edificio ya existe')
+			}
 		} else {
 			res.status(422).send('Datos invalidos')
 		}
@@ -50,8 +53,11 @@ exports.updateBuilding = async (req, res) => {
 			const [done] = await Building.update(req.body, {
 				where: { id },
 			})
-			if (done) res.status(204).send('OK')
-			else res.status(404).send('No encontrado')
+			if (done) {
+				res.status(204).send('OK')
+			} else {
+				res.status(404).send('No encontrado')
+			}
 		}
 	} catch (error) {
 		console.error(error)
@@ -66,7 +72,9 @@ exports.removeBuilding = async (req, res) => {
 		if (building) {
 			await building.destroy({ where: { id } })
 			res.status(204).send('OK')
-		} else res.status(404).send('No encontrado')
+		} else {
+			res.status(404).send('No encontrado')
+		}
 	} catch (error) {
 		console.error(error)
 		res.status(500).send('Hubo un error')
@@ -74,8 +82,7 @@ exports.removeBuilding = async (req, res) => {
 }
 
 exports.buildingIsUnique = async (address, city) => {
-	const count = await Building.count({ where: { address, city } })
-	return count == 0 ? true : false
+	return (await Building.count({ where: { address, city } })) == 0
 }
 
 async function validateBuildingParams(building) {
