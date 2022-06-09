@@ -228,4 +228,19 @@ describe('Building Create', () => {
 			await Building.destroy({ where: { id } })
 		}
 	})
+
+	it('Si se intenta cargar un edificio con administracion inexistente, no debe permitir la carga ', async () => {
+		const building = {
+			address: 'Test',
+			city: 'Test',
+			manager: 'Test',
+			cellPhone: 'Test',
+			AdministrationId: 999999999999999,
+		}
+		try {
+			await axios.post('http://localhost:2999/buildings', building)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+		}
+	})
 })
