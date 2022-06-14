@@ -4,20 +4,20 @@ const { Building } = require('../src/db/models')
 const { buildingIsUnique } = require('../src/controllers/buildings.controller')
 
 describe('Building is Unique', () => {
-	let id
+	let building
+
 	beforeEach(async () => {
-		const { dataValues: building } = await Building.create({
+		building = await Building.create({
 			address: 'abc',
 			city: 'def',
 			manager: 'a',
 			cellPhone: 'a',
 			AdministrationId: 1,
 		})
-		id = building.id
 	})
 
 	afterEach(async () => {
-		await Building.destroy({ where: { id } })
+		await building.destroy()
 	})
 
 	it('Debe devolver FALSE si le paso el que ya existe', async () => {
@@ -207,7 +207,7 @@ describe('Building Create', () => {
 		}
 	})
 
-	it('Si se cargan dos edificios con la misma dirección no permite la carga', async () => {
+	it('Si se cargan dos edificios con la misma dirección debe informar error de duplicado', async () => {
 		const building = {
 			address: 'abc',
 			city: 'def',
@@ -224,8 +224,23 @@ describe('Building Create', () => {
 				building,
 			)
 		} catch (error) {
-			assert.equal(error.response.status, 422)
+			assert.equal(error.response.status, 409)
 			await Building.destroy({ where: { id } })
+		}
+	})
+
+	it('Si se intenta cargar un edificio con administracion inexistente, no debe permitir la carga ', async () => {
+		const building = {
+			address: 'Test',
+			city: 'Test',
+			manager: 'Test',
+			cellPhone: 'Test',
+			AdministrationId: 999999999999999,
+		}
+		try {
+			await axios.post('http://localhost:2999/buildings', building)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
 		}
 	})
 })
