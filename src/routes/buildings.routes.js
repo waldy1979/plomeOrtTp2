@@ -8,10 +8,6 @@ const {
 	removeBuilding,
 } = require('../controllers/buildings.controller')
 
-// router.route('/').get(listBuildings).post(addBuilding)
-
-// router.route('/:id').get(getBuilding).put(updateBuilding).delete(removeBuilding)
-
 router.get('/', listBuildings)
 
 router.get('/:id', getBuilding)
