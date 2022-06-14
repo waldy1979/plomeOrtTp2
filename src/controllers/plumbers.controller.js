@@ -1,4 +1,5 @@
 const { Plumber } = require('../db/models')
+const { stringIsNotBlankAndNotLongerThan } = require('../utils')
 
 exports.listPlumbers = async (req, res) => {
     try {
@@ -27,8 +28,17 @@ exports.getPlumber = async (req, res) => {
 
 exports.addPlumber = async (req, res) => {
     try {
-        const { dataValues: plumber } = await Plumber.create(req.body)
-        res.status(201).json({ plumber })
+        if (await validatePlumberParams(req.body)) {
+            const { identificationNumber } = req.body
+            if (await this.plumberIsUnique(identificationNumber)) {
+                const { dataValues: plumber } = await Plumber.create(req.body)
+                res.status(201).json({ plumber })
+            } else {
+                res.status(409).send('El plomero ya existe')
+            }
+        } else {
+            res.status(422).send('Datos invalidos')
+        }
     } catch (error) {
         console.error(error)
         res.status(500).send('Hubo un error')
@@ -58,4 +68,26 @@ exports.removePlumber = async (req, res) => {
         console.error(error)
         res.status(500).send('Hubo un error')
     }
+
 }
+
+exports.plumberIsUnique = async (identificationNumber) => {
+    return (await Plumber.count({ where: { identificationNumber } })) == 0
+}
+
+async function validatePlumberParams(plumber) {
+    const { firstName, lastName, email, identificationNumber, nationality, celPhone, address } =
+        plumber || null
+    return (
+        stringIsNotBlankAndNotLongerThan(firstName, 50) &&
+        stringIsNotBlankAndNotLongerThan(lastName, 50) &&
+        stringIsNotBlankAndNotLongerThan(email, 50) &&
+        stringIsNotBlankAndNotLongerThan(identificationNumber, 15) &&
+        stringIsNotBlankAndNotLongerThan(email, 50) &&
+        stringIsNotBlankAndNotLongerThan(nationality, 75) &&
+        stringIsNotBlankAndNotLongerThan(celPhone, 50) &&
+        stringIsNotBlankAndNotLongerThan(address, 50)
+
+    )
+}
+
