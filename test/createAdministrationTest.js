@@ -1,13 +1,17 @@
-const {chai}=require('chai');
-const {chaiFetch}=require('chai-fetch');
-chai.use(chaiFetch);
+const axios = require('axios')
+const { assert } = require('chai')
 
-const {expect}=chai;
+describe('Administration Create', () => {
+	/*
+    Debe incluir los siguientes campos: 
+    - name: String 50 caracteres, requerido
+    - email: String 50 caracteres, requerido
+    - discount: Float, no  requerido
+    -administratorId: Integer, requerido
+    -addressId: Integer, requerido
+    -state: Enum, requerido
+    Al agregar una administracion se debe verificar que no exista previamente, siendo el campo identificatorio el name.
 
-fetch('http://localhost:2999/administrations',{
-    method:"POST",
-    headers:{
-        "Content-Type":"application/json"
-    },
-    data: JSON.stringify({name:"nombreDEPrueba",addressId:3,administratorId:5})
+  */
+
 })
