@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			Administration.hasMany(models.Building)
-			Administration.belongsTo(models.Administrator)
+			Administration.belongsTo(models.Administrator, {foreingKey:"administratorId"})
 			Administration.belongsTo(models.Address)
 			Administration.hasMany(models.AdminTelephone,{onDelete:'cascade'})
 		}
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.FLOAT,
 				default: 0,
 			},
-			administratorId: {
+			AdministratorId: {
 				type: DataTypes.INTEGER,
 				references: {
 					model: {
