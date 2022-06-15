@@ -1,11 +1,14 @@
 const axios = require('axios')
 const { assert } = require('chai')
 const { Administration } = require('../src/db/models')
-const { administrationIsUnique } = require('../src/controllers/administrations.controller')
+const {
+	administrationIsUnique,
+} = require('../src/controllers/administrations.controller')
+const { axiosClient } = require('../src/utils')
 
 describe('Administration is Unique', () => {
 	let administration
-  /*
+	/*
   "id": 1,
   "name": "Alex",
   "email": "lilian.gunnarsson@sky.de",
@@ -20,7 +23,7 @@ describe('Administration is Unique', () => {
 			discount: 8,
 			AdministratorId: 3,
 			addressId: 1,
-      state:"alta"
+			state: 'alta',
 		})
 	})
 
@@ -50,7 +53,6 @@ describe('Administration Create', () => {
   Al agregar el administrador (administratorId) se debe verificar que exista previamente
 
 */
- 
 
 	it('Si se completan los caracteres MÍNIMOS por campo debe permitir la carga ', async () => {
 		const administration = {
@@ -59,7 +61,7 @@ describe('Administration Create', () => {
 			discount: 8,
 			AdministratorId: 3,
 			addressId: 1,
-      state:"alta"
+			state: 'alta',
 		}
 
 		try {
@@ -68,7 +70,7 @@ describe('Administration Create', () => {
 				data: {
 					administration: { id },
 				},
-			} = await axios.post('http://localhost:2999/administrations', administration)
+			} = await axiosClient.post('/administrations', administration)
 			assert.equal(status, 201)
 			await Administration.destroy({ where: { id } })
 		} catch (error) {
@@ -91,7 +93,7 @@ describe('Administration Create', () => {
 				data: {
 					administration: { id },
 				},
-			} = await axios.post('http://localhost:2999/administrations', administration)
+			} = await axiosClient.post('/administrations', administration)
 			assert.equal(status, 201)
 			await Administration.destroy({ where: { id } })
 		} catch (error) {
@@ -105,26 +107,26 @@ describe('Administration Create', () => {
 			name: 'Magallanes',
 			email: 'lilian.gunnarsson@sky.de',
 			discount: 8,
-			AdministratorId: 3,			
-      state:"alta"
+			AdministratorId: 3,
+			state: 'alta',
 		}
 		try {
-			await axios.post('http://localhost:2999/administrations', administration)
+			await axiosClient.post('/administrations', administration)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
 	})
-  it('Si falta administratorId, no debe permitir la carga ', async () => {
+	it('Si falta administratorId, no debe permitir la carga ', async () => {
 		const administration = {
 			name: 'Magallanes',
 			email: 'lilian.gunnarsson@sky.de',
 			discount: 8,
 			addressId: 3,
-      AdministratorId: null,			
-      state:"alta"
+			AdministratorId: null,
+			state: 'alta',
 		}
 		try {
-			await axios.post('http://localhost:2999/administrations', administration)
+			await axiosClient.post('/administrations', administration)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
