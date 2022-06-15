@@ -2,6 +2,7 @@ const axios = require('axios')
 const { assert } = require('chai')
 const { Plumber } = require('../src/db/models')
 const { plumberIsUnique } = require('../src/controllers/plumbers.controller')
+const { axiosClient } = require('../src/utils')
 
 describe('Plumber is Unique', () => {
     let plumber
@@ -65,7 +66,7 @@ describe('Plumber Create', () => {
                 data: {
                     plumber: { id },
                 },
-            } = await axios.post('http://localhost:2999/plumbers', plumber)
+            } = await axiosClient.post('/plumbers', plumber)
             assert.equal(status, 201)
             await Plumber.destroy({ where: { id } })
         } catch (error) {
@@ -92,7 +93,7 @@ describe('Plumber Create', () => {
                 data: {
                     plumber: { id },
                 },
-            } = await axios.post('http://localhost:2999/plumbers', plumber)
+            } = await axiosClient.post('/plumbers', plumber)
             assert.equal(status, 201)
             await Plumber.destroy({ where: { id } })
         } catch (error) {
@@ -114,7 +115,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -133,7 +134,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -152,7 +153,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -171,7 +172,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -190,7 +191,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -209,7 +210,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -228,7 +229,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -247,7 +248,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -267,7 +268,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -286,7 +287,7 @@ describe('Plumber Create', () => {
             address: 'Test'
         }
         try {
-            await axios.post('http://localhost:2999/plumbers', plumber)
+            await axiosClient.post('/plumbers', plumber)
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
@@ -308,8 +309,7 @@ describe('Plumber Create', () => {
             dataValues: { id },
         } = await Plumber.create(plumber)
         try {
-            const { status, data } = await axios.post(
-                'http://localhost:2999/plumbers',
+            const { status, data } = await axiosClient.post('/plumbers',
                 plumber,
             )
         } catch (error) {
