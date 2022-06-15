@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { check, body } = require('express-validator')
+const { body } = require('express-validator')
 const {
 	listBuildings,
 	getBuilding,
@@ -18,10 +18,10 @@ router.get('/:id', getBuilding)
 
 router.post(
 	'/',
-	body('address').isLength({ min: 1, max: 50 }),
-	body('city').isLength({ min: 1, max: 40 }),
-	body('manager').isLength({ min: 1, max: 40 }),
-	body('cellPhone').isLength({ min: 1, max: 40 }),
+	body('address').isString().isLength({ min: 1, max: 50 }),
+	body('city').isString().isLength({ min: 1, max: 40 }),
+	body('manager').isString().isLength({ min: 1, max: 40 }),
+	body('cellPhone').isString().isLength({ min: 1, max: 40 }),
 	checkValidationResult,
 	addBuilding,
 )
