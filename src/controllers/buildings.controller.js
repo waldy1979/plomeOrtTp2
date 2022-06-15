@@ -29,16 +29,12 @@ exports.getBuilding = async (req, res) => {
 
 exports.addBuilding = async (req, res) => {
 	try {
-		const { address, city, AdministrationId } = req.body
-		if (await adminIdExists(AdministrationId)) {
-			if (await this.buildingIsUnique(address, city)) {
-				const { dataValues: building } = await Building.create(req.body)
-				res.status(201).json({ building })
-			} else {
-				res.status(409).send('El edificio ya existe')
-			}
+		const { address, city } = req.body
+		if (await this.buildingIsUnique(address, city)) {
+			const { dataValues: building } = await Building.create(req.body)
+			res.status(201).json({ building })
 		} else {
-			res.status(422).send('Datos invalidos')
+			res.status(409).send('El edificio ya existe')
 		}
 	} catch (error) {
 		console.error(error)
