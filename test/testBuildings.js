@@ -1,7 +1,7 @@
-const axios = require('axios')
 const { assert } = require('chai')
 const { Building } = require('../src/db/models')
 const { buildingIsUnique } = require('../src/controllers/buildings.controller')
+const { axiosClient } = require('../src/utils')
 
 describe('Building is Unique', () => {
 	let building
@@ -55,7 +55,7 @@ describe('Building Create', () => {
 				data: {
 					building: { id },
 				},
-			} = await axios.post('http://localhost:2999/buildings', building)
+			} = await axiosClient.post('/buildings', building)
 			assert.equal(status, 201)
 			await Building.destroy({ where: { id } })
 		} catch (error) {
@@ -78,7 +78,7 @@ describe('Building Create', () => {
 				data: {
 					building: { id },
 				},
-			} = await axios.post('http://localhost:2999/buildings', building)
+			} = await axiosClient.post('/buildings', building)
 			assert.equal(status, 201)
 			await Building.destroy({ where: { id } })
 		} catch (error) {
@@ -96,7 +96,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -111,7 +111,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -126,7 +126,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -141,7 +141,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -156,7 +156,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -171,7 +171,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -186,7 +186,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -201,7 +201,7 @@ describe('Building Create', () => {
 			AdministrationId: 1,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
@@ -219,10 +219,7 @@ describe('Building Create', () => {
 			dataValues: { id },
 		} = await Building.create(building)
 		try {
-			const { status, data } = await axios.post(
-				'http://localhost:2999/buildings',
-				building,
-			)
+			const { status, data } = await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 409)
 			await Building.destroy({ where: { id } })
@@ -238,7 +235,7 @@ describe('Building Create', () => {
 			AdministrationId: 999999999999999,
 		}
 		try {
-			await axios.post('http://localhost:2999/buildings', building)
+			await axiosClient.post('/buildings', building)
 		} catch (error) {
 			assert.equal(error.response.status, 422)
 		}
