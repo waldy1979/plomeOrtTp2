@@ -33,14 +33,13 @@ exports.getAdministration = async (req, res) => {
 }
 
 exports.addAdministration = async (req, res) => {
-	try {
-		// console.log(req)
+	try {		
 		if (await validateAdministrationParams(req.body)) {
 			const { name } = req.body
 			if (await this.administrationIsUnique(name)) {
 				const { dataValues: administration } = await Administration.create(
 					req.body,
-				)
+				) 
 				res.status(201).json({ administration })
 			} else {
 				res.status(409).send('La administracion ya existe')
@@ -99,6 +98,7 @@ async function validateAdministrationParams(administration) {
 		stringIsNotBlankAndNotLongerThan(email, 50) &&
 		Number.isInteger(discount) &&
 		addressId != null &&
+		email != null &&
 		AdministratorId != null &&
 		(await administratorIdExists(AdministratorId)) &&
 		(await addressIdExists(addressId))
