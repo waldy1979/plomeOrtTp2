@@ -91,7 +91,7 @@ exports.administrationIsUnique = async name => {
 	return (await Administration.count({ where: { name } })) == 0
 }
 async function validateAdministrationParams(administration) {
-	const { name, email, discount, addressId, AdministratorId } =
+	const { name, email, discount, addressId, AdministratorId, state } =
 		administration || null
 	return (
 		stringIsNotBlankAndNotLongerThan(name, 50) &&
@@ -99,7 +99,8 @@ async function validateAdministrationParams(administration) {
 		Number.isInteger(discount) &&
 		addressId != null &&
 		email != null &&
-		AdministratorId != null &&
+		state != null &&
+		AdministratorId != null && 
 		(await administratorIdExists(AdministratorId)) &&
 		(await addressIdExists(addressId))
 	)

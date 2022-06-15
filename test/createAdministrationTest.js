@@ -86,6 +86,7 @@ describe('Administration Create', () => {
 			discount: 2,
 			addressId: 1,
 			AdministratorId: 1,
+      state:"alta"
 		}
 		try {
 			const {
@@ -108,6 +109,7 @@ describe('Administration Create', () => {
 			email: 'lilian.gunnarsson@sky.de',
 			discount: 8,
 			AdministratorId: 4,
+      addressId: null,
 			state: 'alta',
 		}
 		try {
@@ -118,7 +120,7 @@ describe('Administration Create', () => {
 	})
 	it('Si falta administratorId, no debe permitir la carga ', async () => {
 		const administration = {
-			name: 'Magallanes',
+			name: 'Magall',
 			email: 'lilian.gunnarsson@sky.de',
 			discount: 8,
 			addressId: 3,
@@ -137,8 +139,23 @@ describe('Administration Create', () => {
 			email: null,
 			discount: 8,
 			addressId: 3,
-			AdministratorId: null,
+			AdministratorId: 4,
 			state: 'alta',
+		}
+		try {
+			await axiosClient.post('/administrations', administration)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+		}
+	}) 
+  it('Si falta el state, no debe permitir la carga ', async () => {
+		const administration = {
+			name: 'AdministraX',
+			email: 'a@a.com',
+			discount: 8,
+			addressId: 3,
+			AdministratorId: 5,
+			state: null,
 		}
 		try {
 			await axiosClient.post('/administrations', administration)
@@ -148,7 +165,7 @@ describe('Administration Create', () => {
 	})  
   it('Si el addressId no corresponde a una address existente no debe permitir la carga ', async () => {
 		const administration = {
-			name: 'AdministraA',
+			name: 'AdministraC',
 			email: 'pe@pe.com',
 			discount: 8,
 			addressId: -2,
@@ -163,7 +180,7 @@ describe('Administration Create', () => {
 	})
   it('Si el AdministratorId no corresponde a una Administrator existente no debe permitir la carga ', async () => {
 		const administration = {
-			name: 'AdministraA',
+			name: 'AdministraD',
 			email: 'pe@pe.com',
 			discount: 8,
 			addressId: 2,
