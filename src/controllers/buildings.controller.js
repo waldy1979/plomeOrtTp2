@@ -29,8 +29,8 @@ exports.getBuilding = async (req, res) => {
 
 exports.addBuilding = async (req, res) => {
 	try {
-		if (await validateBuildingParams(req.body)) {
-			const { address, city } = req.body
+		const { address, city, AdministrationId } = req.body
+		if (await adminIdExists(AdministrationId)) {
 			if (await this.buildingIsUnique(address, city)) {
 				const { dataValues: building } = await Building.create(req.body)
 				res.status(201).json({ building })
@@ -49,15 +49,12 @@ exports.addBuilding = async (req, res) => {
 exports.updateBuilding = async (req, res) => {
 	try {
 		const { id } = req.params
-		if (await validateBuildingParams(req.body)) {
-			const [done] = await Building.update(req.body, {
-				where: { id },
-			})
-			if (done) {
-				res.status(204).send('OK')
-			} else {
-				res.status(404).send('No encontrado')
-			}
+		const building = await Building.findByPk(id)
+		if (building) {
+			await building.update(req.body)
+			res.status(204).json({ building })
+		} else {
+			res.status(404).send('No encontrado')
 		}
 	} catch (error) {
 		console.error(error)
@@ -68,7 +65,7 @@ exports.updateBuilding = async (req, res) => {
 exports.removeBuilding = async (req, res) => {
 	try {
 		const { id } = req.params
-		const building = await Building.findByPk(req.params.id)
+		const building = await Building.findByPk(id)
 		if (building) {
 			await building.destroy({ where: { id } })
 			res.status(204).send('OK')

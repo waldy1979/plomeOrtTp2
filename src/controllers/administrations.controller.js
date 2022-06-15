@@ -34,11 +34,13 @@ exports.getAdministration = async (req, res) => {
 
 exports.addAdministration = async (req, res) => {
 	try {
-		console.log(req)
+		// console.log(req)
 		if (await validateAdministrationParams(req.body)) {
 			const { name } = req.body
 			if (await this.administrationIsUnique(name)) {
-				const { dataValues: administration } = await Administration.create(req.body)
+				const { dataValues: administration } = await Administration.create(
+					req.body,
+				)
 				res.status(201).json({ administration })
 			} else {
 				res.status(409).send('La administracion ya existe')
@@ -80,13 +82,13 @@ exports.removeAdministration = async (req, res) => {
 exports.adminIdExists = async id => {
 	return (await Administration.count({ where: id })) > 0
 }
-async function administratorIdExists (id) {
+async function administratorIdExists(id) {
 	return (await Administrator.count({ where: id })) > 0
 }
-async function addressIdExists (id)  {
+async function addressIdExists(id) {
 	return (await Address.count({ where: id })) > 0
 }
-exports.administrationIsUnique = async (name) => {
+exports.administrationIsUnique = async name => {
 	return (await Administration.count({ where: { name } })) == 0
 }
 async function validateAdministrationParams(administration) {
@@ -97,8 +99,8 @@ async function validateAdministrationParams(administration) {
 		stringIsNotBlankAndNotLongerThan(email, 50) &&
 		Number.isInteger(discount) &&
 		addressId != null &&
-		AdministratorId != null &&		
-		(await administratorIdExists(AdministratorId))	&&
+		AdministratorId != null &&
+		(await administratorIdExists(AdministratorId)) &&
 		(await addressIdExists(addressId))
 	)
 }
