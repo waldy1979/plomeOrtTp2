@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const { Administrator, Administration, Plumber } = require('./src/db/models')
+const { Administrator, Administration, Plumber, JobOrder } = require('./src/db/models')
 
 //INIT
 const app = express()
@@ -58,6 +58,9 @@ app.get('/plumbers/:id', async function (req, res) {
 
 app.use('/plumbers', require('./src/routes/plumbers.routes'))
 //fin plumbers
+
+//JobOrders
+app.use('/jobOrders', require('./src/routes/jobOrders.routes'))
 
 // SERVERT STARTER
 app.listen(app.get('port'), () => {

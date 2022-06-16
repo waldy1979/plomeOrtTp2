@@ -18,8 +18,27 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				autoIncrement: true,
 			},
-			buildingId: DataTypes.INTEGER,
-			plumberId: DataTypes.INTEGER,
+			buildingId: {
+				type: DataTypes.INTEGER,
+				references: {
+					model: {
+						tableName: 'buildings',
+					},
+					key: 'id',
+				},
+				allowNull: false,
+			},
+			plumberId: {
+				type: DataTypes.INTEGER,
+				references: {
+					model: {
+						tableName: 'plumbers',
+					},
+					key: 'id',
+				},
+				allowNull: false,
+			},
+
 			startingDate: DataTypes.DATE,
 			endDate: DataTypes.DATE,
 			state: DataTypes.ENUM('en curso', 'terminado'),
@@ -28,6 +47,15 @@ module.exports = (sequelize, DataTypes) => {
 			visitTime: DataTypes.TIME,
 			aptNumber: DataTypes.INTEGER,
 			place: DataTypes.STRING,
+
+			createdAt: {
+				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW,
+			},
+			updatedAt: {
+				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW,
+			},
 		},
 		{
 			sequelize,
