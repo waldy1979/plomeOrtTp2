@@ -56,9 +56,9 @@ describe('Administration Create', () => {
 
 	it('Si se completan los caracteres MÍNIMOS por campo debe permitir la carga ', async () => {
 		const administration = {
-			name: 'Magallanes',
-			email: 'lilian.gunnarsson@sky.de',
-			discount: 8,
+			name: 'a',
+			email: 'a@a.dev',
+			discount: 1,
 			AdministratorId: 3,
 			addressId: 1,
 			state: 'alta',
@@ -86,6 +86,7 @@ describe('Administration Create', () => {
 			discount: 2,
 			addressId: 1,
 			AdministratorId: 1,
+      state:"alta"
 		}
 		try {
 			const {
@@ -104,10 +105,11 @@ describe('Administration Create', () => {
 
 	it('Si falta addressId, no debe permitir la carga ', async () => {
 		const administration = {
-			name: 'Magallanes',
+			name: 'MiAdmin',
 			email: 'lilian.gunnarsson@sky.de',
 			discount: 8,
-			AdministratorId: 3,
+			AdministratorId: 4,
+      addressId: null,
 			state: 'alta',
 		}
 		try {
@@ -118,7 +120,7 @@ describe('Administration Create', () => {
 	})
 	it('Si falta administratorId, no debe permitir la carga ', async () => {
 		const administration = {
-			name: 'Magallanes',
+			name: 'Magall',
 			email: 'lilian.gunnarsson@sky.de',
 			discount: 8,
 			addressId: 3,
@@ -131,4 +133,65 @@ describe('Administration Create', () => {
 			assert.equal(error.response.status, 422)
 		}
 	})
+  it('Si falta email, no debe permitir la carga ', async () => {
+		const administration = {
+			name: 'AdministraA',
+			email: null,
+			discount: 8,
+			addressId: 3,
+			AdministratorId: 4,
+			state: 'alta',
+		}
+		try {
+			await axiosClient.post('/administrations', administration)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+		}
+	}) 
+  it('Si falta el state, no debe permitir la carga ', async () => {
+		const administration = {
+			name: 'AdministraX',
+			email: 'a@a.com',
+			discount: 8,
+			addressId: 3,
+			AdministratorId: 5,
+			state: null,
+		}
+		try {
+			await axiosClient.post('/administrations', administration)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+		}
+	})  
+  it('Si el addressId no corresponde a una address existente no debe permitir la carga ', async () => {
+		const administration = {
+			name: 'AdministraC',
+			email: 'pe@pe.com',
+			discount: 8,
+			addressId: -2,
+			AdministratorId: 2,
+			state: 'alta',
+		}
+		try {
+			await axiosClient.post('/administrations', administration)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+		}
+	})
+  it('Si el AdministratorId no corresponde a una Administrator existente no debe permitir la carga ', async () => {
+		const administration = {
+			name: 'AdministraD',
+			email: 'pe@pe.com',
+			discount: 8,
+			addressId: 2,
+			AdministratorId: 10000000,
+			state: 'alta',
+		}
+		try {
+			await axiosClient.post('/administrations', administration)
+		} catch (error) {
+			assert.equal(error.response.status, 422)
+		}
+	})
 })
+
