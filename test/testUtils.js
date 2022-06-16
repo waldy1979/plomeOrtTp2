@@ -1,7 +1,7 @@
 const { assert } = require('chai')
 const { stringIsNotBlankAndNotLongerThan } = require('../src/utils')
 
-describe('stringIsNotBlankAndNotLongerThan', function () {
+describe('prueba de función stringIsNotBlankAndNotLongerThan', function () {
 	it('Si recibe NULL tiene que devolver FALSE', function () {
 		assert.equal(stringIsNotBlankAndNotLongerThan(null, 10), false)
 	})

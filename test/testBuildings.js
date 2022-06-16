@@ -3,7 +3,7 @@ const { Building } = require('../src/db/models')
 const { buildingIsUnique } = require('../src/controllers/buildings.controller')
 const { axiosClient } = require('../src/utils')
 
-describe('Building is Unique', () => {
+describe('Test de función Building is Unique', () => {
 	let building
 
 	beforeEach(async () => {
@@ -29,7 +29,7 @@ describe('Building is Unique', () => {
 	})
 })
 
-describe('Building Create', () => {
+describe('Test de Building Create', () => {
 	/*
   Debe incluir los siguientes campos: 
   - address: String 50 caracteres, requerido
