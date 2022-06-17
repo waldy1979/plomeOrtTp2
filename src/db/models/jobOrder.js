@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
 			visitTime: DataTypes.TIME,
 			aptNumber: DataTypes.INTEGER,
 			place: DataTypes.STRING,
-
+			payment: DataTypes.INTEGER,
 			createdAt: {
 				type: DataTypes.DATE,
 				defaultValue: DataTypes.NOW,

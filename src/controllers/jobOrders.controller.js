@@ -1,6 +1,4 @@
 const { JobOrder, Plumber, Building } = require('../db/models')
-const { buildingIdExists } = require('./buildings.controller')
-const { plumberIdExists } = require('./plumbers.controller')
 const { stringIsNotBlankAndNotLongerThan } = require('../utils')
 
 exports.listJobOrders = async (req, res) => {
@@ -30,8 +28,8 @@ exports.getJobOrder = async (req, res) => {
 exports.addJobOrder = async (req, res) => {
 	try {
 		if (await validateJobOrderParams(req.body)) {
-			const { id } = req.params.id
-			if (await this.jobOrderIsUnique(id)) {
+			const { buildingId, startingDate, aptNumber } = req.body
+			if (await this.jobOrderIsUnique(buildingId, startingDate, aptNumber)) {
 				const { dataValues: jobOrder } = await JobOrder.create(req.body)
 				res.status(201).json({ jobOrder })
 			} else {
@@ -75,8 +73,8 @@ exports.removeJobOrder = async (req, res) => {
 	}
 }
 
-exports.jobOrderIsUnique = async (id) => {
-	return (await JobOrder.count({ where: { id } })) == 0
+exports.jobOrderIsUnique = async (buildingId, startingDate, aptNumber) => {
+	return (await JobOrder.count({ where: { buildingId, startingDate, aptNumber } })) == 0
 }
 
 
@@ -97,4 +95,12 @@ async function validateJobOrderParams(jobOrder) {
 		(await buildingIdExists(buildingId)) &&
 		(await plumberIdExists(plumberId))
 	)
+}
+
+async function buildingIdExists(id) {
+	return (await Building.count({ where: id })) > 0
+}
+
+async function plumberIdExists(id) {
+	return (await Plumber.count({ where: id })) > 0
 }

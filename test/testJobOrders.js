@@ -11,15 +11,15 @@ describe('jobOrder is Unique', () => {
         jobOrder = await JobOrder.create({
             buildingId: 1,
             plumberId: 1,
-            startingDate: new Date,
-            endDate: new Date,
+            startingDate: new Date('2011-1-1'),
+            endDate: new Date(),
             state: 'en curso',
             isPayed: false,
-            visitDate: new Date,
-            visitTime: visitDate.getTime(),
+            visitDate: new Date(),
+            visitTime: '16:20',
             aptNumber: 42,
-            place: 'CABA'
-
+            place: 'CABA',
+            payment: 1001,
         })
     })
 
@@ -28,29 +28,30 @@ describe('jobOrder is Unique', () => {
     })
 
     it('Debe devolver FALSE si le paso el que ya existe', async () => {
-        assert.equal(await jobOrderIsUnique(jobOrder.id), false)
+        assert.equal(await jobOrderIsUnique(1, new Date('2011-1-1'), 42), false)
     })
 
     it('Debe devolver TRUE si le paso uno que no hay', async () => {
-        assert.equal(await jobOrderIsUnique(jobOrder.id + 999999999), true)
+        assert.equal(await jobOrderIsUnique(1, new Date('2011-1-1'), 43), true)
     })
 })
 
 describe('JobOrder Create', () => {
 
 
-    it('Si cumplo con los requisitos de cada campo debe permitir la carga ', async () => {
+    it('Si no existe el building no debe permitir la carga ', async () => {
         const jobOrder = {
-            buildingId: 1,
+            buildingId: -2,
             plumberId: 1,
-            startingDate: new Date,
-            endDate: new Date,
+            startingDate: new Date('2011-1-1'),
+            endDate: new Date(),
             state: 'en curso',
             isPayed: false,
-            visitDate: new Date,
-            visitTime: visitDate.getTime(),
+            visitDate: new Date(),
+            visitTime: '16:20',
             aptNumber: 42,
-            place: 'CABA'
+            place: 'CABA',
+            payment: 1001,
         }
 
         try {
@@ -61,49 +62,94 @@ describe('JobOrder Create', () => {
                 },
             } = await axiosClient.post('/jobOrders', jobOrder)
             assert.equal(status, 201)
-            await Plumber.destroy({ where: { id } })
-        } catch (error) {
-            console.log(error.message)
-            assert.equal(error.message, '')
-        }
-    })
-
-
-    it('Si aptNumber no es un numero, no debe permitir la carga ', async () => {
-        const jobOrder = {
-            buildingId: 1,
-            plumberId: 1,
-            startingDate: new Date,
-            endDate: new Date,
-            state: 'en curso',
-            isPayed: false,
-            visitDate: new Date,
-            visitTime: visitDate.getTime(),
-            aptNumber: 'asd',
-            place: 'CABA'
-        }
-        try {
-            await axiosClient.post('/jobOrder', jobOrder)
+            await JobOrder.destroy({ where: { id } })
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
     })
 
-    it('Si place esta en blanco, no debe permitir la carga ', async () => {
+    it('Si no existe el plumber no debe permitir la carga ', async () => {
         const jobOrder = {
-            buildingId: 1,
-            plumberId: 1,
-            startingDate: new Date,
-            endDate: new Date,
+            buildingId: 2,
+            plumberId: -1,
+            startingDate: new Date('2011-1-1'),
+            endDate: new Date(),
             state: 'en curso',
             isPayed: false,
-            visitDate: new Date,
-            visitTime: visitDate.getTime(),
+            visitDate: new Date(),
+            visitTime: '16:20',
             aptNumber: 42,
-            place: ''
+            place: 'CABA',
+            payment: 1001,
         }
+
         try {
-            await axiosClient.post('/jobOrder', jobOrder)
+            const {
+                status,
+                data: {
+                    jobOrder: { id },
+                },
+            } = await axiosClient.post('/jobOrders', jobOrder)
+            assert.equal(status, 201)
+            await JobOrder.destroy({ where: { id } })
+        } catch (error) {
+            assert.equal(error.response.status, 422)
+        }
+    })
+
+    it('Si no aptNumber no es un numero no debe permitir la carga ', async () => {
+        const jobOrder = {
+            buildingId: 2,
+            plumberId: 2,
+            startingDate: new Date('2011-1-1'),
+            endDate: new Date(),
+            state: 'en curso',
+            isPayed: false,
+            visitDate: new Date(),
+            visitTime: '16:20',
+            aptNumber: 'asd',
+            place: 'CABA',
+            payment: 1001,
+        }
+
+        try {
+            const {
+                status,
+                data: {
+                    jobOrder: { id },
+                },
+            } = await axiosClient.post('/jobOrders', jobOrder)
+            assert.equal(status, 201)
+            await JobOrder.destroy({ where: { id } })
+        } catch (error) {
+            assert.equal(error.response.status, 500)
+        }
+    })
+
+    it('Si place esta en blanco no debe permitir la carga ', async () => {
+        const jobOrder = {
+            buildingId: 2,
+            plumberId: -1,
+            startingDate: new Date('2011-1-1'),
+            endDate: new Date(),
+            state: 'en curso',
+            isPayed: false,
+            visitDate: new Date(),
+            visitTime: '16:20',
+            aptNumber: 42,
+            place: '',
+            payment: 1001,
+        }
+
+        try {
+            const {
+                status,
+                data: {
+                    jobOrder: { id },
+                },
+            } = await axiosClient.post('/jobOrders', jobOrder)
+            assert.equal(status, 201)
+            await JobOrder.destroy({ where: { id } })
         } catch (error) {
             assert.equal(error.response.status, 422)
         }
