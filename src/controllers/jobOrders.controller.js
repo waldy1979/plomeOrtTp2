@@ -5,6 +5,7 @@ exports.listJobOrders = async (req, res) => {
 	try {
 		const jobOrders = await JobOrder.findAll({
 			where: req.query,
+			include: ['Building'],
 			limit: 100,
 		})
 		res.status(200).json({ jobOrders })
@@ -16,7 +17,9 @@ exports.listJobOrders = async (req, res) => {
 
 exports.getJobOrder = async (req, res) => {
 	try {
-		const jobOrder = await JobOrder.findByPk(req.params.id)
+		const jobOrder = await JobOrder.findByPk(req.params.id, {
+			include: ['Building'],
+		})
 		if (jobOrder) res.status(200).json({ jobOrder })
 		else res.status(404).send('No encontrada')
 	} catch (error) {
