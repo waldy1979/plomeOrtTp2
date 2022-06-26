@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
 		 */
 		static associate(models) {
 			JobOrder.belongsTo(models.Building)
+			JobOrder.belongsTo(models.Plumber)
 		}
 	}
 	JobOrder.init(
