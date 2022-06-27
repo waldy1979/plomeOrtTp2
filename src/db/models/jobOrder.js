@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
 				primaryKey: true,
 				autoIncrement: true,
 			},
-			buildingId: {
+			BuildingId: {
 				type: DataTypes.INTEGER,
 				references: {
 					model: {
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
 				},
 				allowNull: false,
 			},
-			plumberId: {
+			PlumberId: {
 				type: DataTypes.INTEGER,
 				references: {
 					model: {
