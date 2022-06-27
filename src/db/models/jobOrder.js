@@ -44,10 +44,16 @@ module.exports = (sequelize, DataTypes) => {
 			endDate: DataTypes.DATE,
 			state: DataTypes.ENUM('en curso', 'terminado'),
 			isPayed: DataTypes.BOOLEAN,
-			visitDate: DataTypes.DATE,
-			visitTime: DataTypes.TIME,
+			visitDate: {
+				type: DataTypes.DATE,
+			},
+			visitTime: {
+				type: DataTypes.TIME,
+			},
 			aptNumber: DataTypes.INTEGER,
-			place: DataTypes.STRING,
+			place: {
+				type: DataTypes.STRING,
+			},
 			payment: DataTypes.INTEGER,
 			createdAt: {
 				type: DataTypes.DATE,

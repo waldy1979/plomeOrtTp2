@@ -48,12 +48,12 @@ module.exports = {
       visitDate: {
         type: Sequelize.DataTypes.DATE,
         defaultValue: Sequelize.DataTypes.NOW,
-        allowNull: false,
+        allowNull: true,
       },
       visitTime: {
         type: Sequelize.DataTypes.TIME,
         defaultValue: Sequelize.DataTypes.NOW,
-        allowNull: false,
+        allowNull: true,
       },
       aptNumber: {
         type: Sequelize.DataTypes.INTEGER,

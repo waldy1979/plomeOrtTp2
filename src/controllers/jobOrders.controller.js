@@ -29,10 +29,11 @@ exports.getJobOrder = async (req, res) => {
 }
 
 exports.addJobOrder = async (req, res) => {
+	console.log(req.body)
 	try {
 		if (await validateJobOrderParams(req.body)) {
-			const { buildingId, startingDate, aptNumber } = req.body
-			if (await this.jobOrderIsUnique(buildingId, startingDate, aptNumber)) {
+			const { BuildingId, PlumberId, startingDate, endDate, visitTime, payment, aptNumber, place } = req.body
+			if (await this.jobOrderIsUnique(BuildingId, startingDate, aptNumber)) {
 				const { dataValues: jobOrder } = await JobOrder.create(req.body)
 				res.status(201).json({ jobOrder })
 			} else {
@@ -82,21 +83,18 @@ exports.jobOrderIsUnique = async (buildingId, startingDate, aptNumber) => {
 
 
 async function validateJobOrderParams(jobOrder) {
-	const { buildingId, plumberId, startingDate, endDate, state, isPayed,
-		visitDate, visitTime, aptNumber, place } = jobOrder || null
+	const { BuildingId, PlumberId, startingDate, endDate, visitTime, payment, aptNumber, place } = jobOrder || null
 	return (
-		buildingId != null &&
-		plumberId != null &&
+		BuildingId != null &&
+		PlumberId != null &&
 		startingDate != null &&
 		endDate != null &&
-		state != null &&
-		isPayed != null &&
-		visitDate != null &&
 		visitTime != null &&
+		payment > 0 &&
 		!Number.isNaN(aptNumber) &&
-		stringIsNotBlankAndNotLongerThan(place, 50) &&
+		stringIsNotBlankAndNotLongerThan(place, 50) /* &&
 		(await buildingIdExists(buildingId)) &&
-		(await plumberIdExists(plumberId))
+		(await plumberIdExists(plumberId))*/
 	)
 }
 
