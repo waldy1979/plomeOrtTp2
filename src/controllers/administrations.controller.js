@@ -95,13 +95,10 @@ async function validateAdministrationParams(administration) {
 		administration || null
 	return (
 		stringIsNotBlankAndNotLongerThan(name, 50) &&
-		stringIsNotBlankAndNotLongerThan(email, 50) &&
-		Number.isInteger(discount) &&
+		stringIsNotBlankAndNotLongerThan(email, 50) &&		
 		addressId != null &&
-		email != null &&
-		state != null &&
+		email != null &&		
 		AdministratorId != null && 
-		(await administratorIdExists(AdministratorId)) &&
-		(await addressIdExists(addressId))
+		(await administratorIdExists(AdministratorId))
 	)
 }
