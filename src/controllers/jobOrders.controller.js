@@ -77,8 +77,8 @@ exports.removeJobOrder = async (req, res) => {
 	}
 }
 
-exports.jobOrderIsUnique = async (buildingId, startingDate, aptNumber) => {
-	return (await JobOrder.count({ where: { buildingId, startingDate, aptNumber } })) == 0
+exports.jobOrderIsUnique = async (BuildingId, startingDate, aptNumber) => {
+	return (await JobOrder.count({ where: { BuildingId, startingDate, aptNumber } })) == 0
 }
 
 
